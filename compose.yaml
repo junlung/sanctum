@@ -3,7 +3,7 @@ services:
     build: .
     container_name: sanctum
     volumes:
-      - ".:/app"
+      - "./build/data:/build/data"
     expose:
       - 8000
     ports:
