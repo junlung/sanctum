@@ -15,6 +15,9 @@ def get_db():
     finally:
         db.close()
 
+#####################
+## PEOPLE
+#####################
 @app.post("/people/", response_model=schemas.Person)
 def create_person(person: schemas.PersonCreate, db: Session = Depends(get_db)):
     db_person = crud.get_person_by_name(db, name=person.name)
@@ -41,7 +44,9 @@ def read_person(person_name: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Person not found")
     return db_person
 
-
+#####################
+## QUOTES
+#####################
 @app.post("/quote/", response_model=schemas.Quote)
 def create_quote(quote: schemas.QuoteCreate, db: Session = Depends(get_db)):
     return crud.create_quote(db=db, quote=quote)

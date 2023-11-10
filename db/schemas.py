@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
-
+#####################
+## PEOPLE
+#####################
 class PersonBase(BaseModel):
     name: str
 
@@ -13,13 +15,14 @@ class Person(PersonBase):
     class Config:
         orm_mode = True
 
-
+#####################
+## DISCORD MEMBERS
+#####################
 class DiscordMemberBase(BaseModel):
     first_name: str
     last_name: str
     discord_id : str
     discord_username: str
-
 
 class DiscordMemberCreate(DiscordMemberBase):
     pass
@@ -31,15 +34,18 @@ class DiscordMember(DiscordMemberBase):
         orm_mode = True
 
 
+#####################
+## QUOTES
+#####################
 class QuoteBase(BaseModel):
     text: str
-    person_id: str
 
 class QuoteCreate(QuoteBase):
-    pass
+    person_name: str
 
 class Quote(QuoteBase):
     id: int
+    person_id: int
 
     class Config:
         orm_mode = True
