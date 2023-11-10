@@ -33,7 +33,6 @@ class DiscordMember(DiscordMemberBase):
     class Config:
         orm_mode = True
 
-
 #####################
 ## QUOTES
 #####################

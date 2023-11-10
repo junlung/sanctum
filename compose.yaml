@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    container_name: sanctum
+    volumes:
+      - ".:/app"
+    expose:
+      - 8000
+    ports:
+      - '8000:8000'

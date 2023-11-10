@@ -1,13 +1,7 @@
 FROM python:3.9
-
-WORKDIR /code
-
-COPY ./requirements.txt /code/requirements.txt
-
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-ENV PYTHONPATH /code/app
-
-COPY . /code/app
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+WORKDIR /build
+COPY ./requirements.txt /build/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /build/requirements.txt
+ENV PYTHONPATH /build/app
+COPY . /build/app
+CMD ["uvicorn", "--host", "0.0.0.0", "--reload", "--reload-dir", "/app", "app.main:app"]
