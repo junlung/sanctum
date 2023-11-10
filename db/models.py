@@ -22,8 +22,6 @@ class DiscordMember(Base):
     discord_username = Column(String)
     person_id = Column(Integer, ForeignKey("people.id"))
 
-    person = relationship("Person", back_populates="discord_user")
-
 class Quote(Base):
     __tablename__ = "quotes"
 
