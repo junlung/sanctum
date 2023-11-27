@@ -45,8 +45,32 @@ def read_person(person_name: str, db: Session = Depends(get_db)):
     return db_person
 
 #####################
+## DISCORD MEMBERS
+#####################
+@app.post("/discord_members/", response_model=schemas.DiscordMember)
+def create_member(member: schemas.DiscordMemberCreate, db: Session = Depends(get_db)):
+    db_member = crud.get_discord_member_by_discord_id(db, member.discord_id)
+    if db_member:
+        raise HTTPException(status_code=400, detail="Member already exists")
+    crud.create_discord_member(db, member=member)
+
+@app.get("/discord_members/", response_model=list[schemas.DiscordMember])
+def get_members(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    members = crud.get_members(db, skip=skip, limit=limit)
+    return members
+
+#####################
 ## QUOTES
 #####################
+@app.get("/quote/all", response_model=list[schemas.Quote])
+def read_quotes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    quotes = crud.get_quotes(db, skip=skip, limit=limit)
+    return quotes
+
 @app.post("/quote/", response_model=schemas.Quote)
 def create_quote(quote: schemas.QuoteCreate, db: Session = Depends(get_db)):
-    return crud.create_quote(db=db, quote=quote)
+    if quote.person_name:
+        return crud.create_quote_from_name(db=db, quote=quote)
+    if quote.person_discord_id:
+        return crud.create_quote_from_member(db=db, quote=quote)
+    raise HTTPException(status_code=404, detail="Person not found")

@@ -19,17 +19,16 @@ class Person(PersonBase):
 ## DISCORD MEMBERS
 #####################
 class DiscordMemberBase(BaseModel):
-    first_name: str
-    last_name: str
-    discord_id : str
+    discord_id : int
     discord_username: str
 
 class DiscordMemberCreate(DiscordMemberBase):
-    pass
+    name: str
 
 class DiscordMember(DiscordMemberBase):
     id: int
-
+    person_id: int
+    
     class Config:
         orm_mode = True
 
@@ -40,7 +39,8 @@ class QuoteBase(BaseModel):
     text: str
 
 class QuoteCreate(QuoteBase):
-    person_name: str
+    person_name : str = None
+    person_discord_id : int = None
 
 class Quote(QuoteBase):
     id: int
